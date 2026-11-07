@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.archive/
+/raw_data/
+/processed_data/
+/figures/archive/
