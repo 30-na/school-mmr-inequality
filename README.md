@@ -36,11 +36,7 @@ present. School IDs are RCDTS codes; enrollment and coverage cover PreK-12.
 [Cartographic Boundary Files](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html).
 `il_counties.gpkg` is the Illinois subset of the **2020 county boundaries at
 1:500,000 scale**, originally `cb_2020_us_county_500k`. It contains 102 county
-geometries and their IDs. This file is used for county naming and maps, not
-as a source of vaccination data.
-
-This root README contains the source documentation and instructions for the
-current project; no separate dataset README is needed.
+geometries and their IDs.
 
 ## Running the analysis
 
@@ -67,38 +63,26 @@ Required packages: `readxl`, `dplyr`, `tidyr`, `ggplot2`, and `sf` (`grid` comes
 with R). Tested with R 4.3.2. Put the county boundaries at
 `raw_data/il_counties.gpkg` before running; no personal cache path is used.
 
-`raw_data/`, `processed_data/` and `figures/Archive/` (also lowercase `archive`)
-are excluded from Git. After cloning, add the raw inputs described above and
+`raw_data/`and `processed_data/` are excluded from Git. After cloning, add the raw inputs described above and
 run scripts 01-06 to regenerate the processed tables and current figures.
 
-The workflow does not read older processed data, previous reports, the authors'
-datasets, downloaded county vaccination data, or other states' data. No reports
-are generated. Existing historical reports are separate reference artifacts.
 
 ## Analysis definitions
 
-- Pre: 2014-15 to 2019-20; Pandemic: 2020-21 to 2022-23; Post: 2023-24 to 2025-26.
+- **Pre Pandemic**: 2014-15 to 2019-20; **Pandemic**: 2020-21 to 2022-23; **Post Pandemic**: 2023-24 to 2025-26.
 - Coverage in 2014-15 and 2020-21 is protected students divided by enrollment;
   other years use reported coverage. Original values are preserved.
-- The existing enrollment reconstruction for 458 Chicago records in 2021-22
-  is retained and flagged. Suppressed values are otherwise not imputed.
+<!-- - The existing enrollment reconstruction for 458 Chicago records in 2021-22
+  is retained and flagged. Suppressed values are otherwise not imputed. -->
 - County measures include median-P10 gap, enrollment-weighted SD, raw MAD and
   unweighted sample SD. Chicago and suburban Cook are combined.
-- Maps are saved only as four combined figures (gap, weighted SD, MAD and
-  unweighted SD), each showing all three periods. Individual period maps are
-  not saved. Each measure uses its own fixed pre-pandemic disparity cutoffs.
-- School tracking uses original RCDTS IDs, at least three pre-period years,
-  all three years in each follow-up period, and a stable assigned county.
+<!-- - School tracking uses original RCDTS IDs, at least three pre-period years,
+  all three years in each follow-up period, and a stable assigned county. -->
 - Period comparisons use Friedman and paired Wilcoxon tests; paired p-values
   have Holm correction. Both sets of bootstrap intervals use 4,000 repetitions
   and the existing seeds. School-change intervals resample whole counties.
-- Only the primary analysis is generated. County-size and data-definition
-  sensitivity analyses and their figures are not included.
 
 ## Seven processed tables
-
-All seven files are directly inside `processed_data/`, with no subfolders,
-RDS copies or separate audit files:
 
 | File | One row represents |
 |---|---|
@@ -115,7 +99,3 @@ In `statistical_results.csv`, `analysis`, `method`, `metric`, `group` and
 confidence intervals in percentage points; `p` and adjusted p-value columns
 apply to the period tests. Fields that do not apply to a method are missing.
 
-CSV files use UTF-8 and retain full numeric precision and original school IDs. Preparation
-flags and original values stay in `school_year_data.csv`; script 01 verifies
-that raw files have not changed during reading. All figures are PNG only and
-are saved directly inside `figures/`.
