@@ -38,6 +38,18 @@ present. School IDs are RCDTS codes; enrollment and coverage cover PreK-12.
 1:500,000 scale**, originally `cb_2020_us_county_500k`. It contains 102 county
 geometries and their IDs.
 
+
+## Methodology
+
+### Data preparation and cleaning
+We combined school level measles protection data from the Illinois State Board of Education for the 2014-15 through 2025-26 school years. Chicago records provided on separate worksheets were included. We removed five rows without school identifiers or school names and two scool with the same id number. School identifiers extra spaces were removed, and a leading zero was added to identifiers with 14 characters to restore the standard 15 character format. These steps allowed identifiers to be matched across years.
+Counts reported as “<10” were treated as missing numeric values. However, 458 Chicago records in 2021-22 had enrollment reported as “<10” despite having at least 10 protected students. For these records, we estimated enrollment by dividing the protected count by the reported protection proportion. All estimates were rounded to the nearest integer.
+We assigned each school to a county using the county code within its identifier and the ISBE county code list. County names were standardized to match the map boundary file. Chicago schools and other schools in Cook County were analyzed together.
+In 2014-15, the workbook calculated coverage using the sum of vaccination-status counts, but its formula ignored suppressed “<10” entries. This could produce percentages higher than those calculated using total enrollment. In 2020-21, the reported calculation excluded students classified as noncompliant but remote due to COVID from the denominator. We recalculated coverage for both years as the number of protected students divided by total enrollment, multiplied by 100 to make coverage comparable across years.
+The prepared dataset contained 58,212 school-year records. County-level analyses excluded 241 records without an identifiable county and another 89 records with missing coverage or coverage outside 0-100%, leaving 57,882 records. 
+For enrollment-weighted calculations, we excluded records with missing enrollment or enrollment of zero or less, because we needed student counts to calculate the weights. This affected 291 of the 57,882 records. These records remained available for calculations that did not require enrollment, such as the median-P10 gap, SD, and MAD.
+
+
 ## Running the analysis
 
 Run these six scripts in order from the project root:
