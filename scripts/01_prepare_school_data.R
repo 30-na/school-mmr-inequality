@@ -1,5 +1,5 @@
 # Run scripts 01-06 in order from the project root.
-# Existing cleaning rules only. Original state workbooks are never changed.
+# Original state workbooks are never changed.
 if (.Platform$OS.type == 'windows') invisible(Sys.setlocale('LC_CTYPE', 'English_United States.utf8'))
 library(readxl)
 library(dplyr)
@@ -62,11 +62,11 @@ school <- bind_rows(school_tables) %>%
     enrollment = suppressWarnings(as.numeric(enrollment_original)),
     protected = suppressWarnings(as.numeric(protected_original)), estimated = FALSE)
 
-# Preserve the existing exclusion of ambiguous duplicate IDs.
+# Remove both records when schools share an identifier in the same year.
 duplicate <- duplicated(paste(school$year, school$id)) |
   duplicated(paste(school$year, school$id), fromLast = TRUE)
 school$duplicate_id <- duplicate
-school$id[duplicate] <- NA_character_
+school <- school[!duplicate, ]
 
 # Existing reconstruction: 458 Chicago records with suppressed enrollment in 2021-22.
 affected <- which(school$year == '2021-22' &
